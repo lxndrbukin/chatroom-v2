@@ -1,0 +1,33 @@
+@import '../../../assets/variables.scss';
+
+.chat-box {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 1fr 70px;
+
+  .chat-messages {
+    background-color: $light-grey;
+    width: 100%;
+  }
+
+  .chat-form {
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    border-top: 1px solid $grey;
+
+    .chat-form-input {
+      padding: 10px;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    button {
+      background-color: transparent;
+      cursor: pointer;
+      border: none;
+    }
+  }
+}
