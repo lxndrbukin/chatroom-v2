@@ -1,7 +1,5 @@
 import { useEffect } from 'react';
-import * as socketIO from 'socket.io-client';
-
-const socket = socketIO.connect('http://localhost:5000');
+import { socket } from '../socket';
 
 export default function App(): JSX.Element {
   useEffect(() => {
