@@ -9,6 +9,16 @@
   .chat-messages {
     background-color: $light-grey;
     width: 100%;
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: 15px;
+
+    .chat-message {
+      background-color: $grey;
+      padding: 10px 15px;
+      border-radius: 7px;
+      width: fit-content;
+    }
   }
 
   .chat-form {

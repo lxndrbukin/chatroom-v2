@@ -13,7 +13,7 @@ export default function ChatBox(): JSX.Element {
   }, []);
 
   const renderedMessages = messages.map((message) => {
-    return <div>{message.message}</div>;
+    return <div className="chat-message">{message.message}</div>;
   });
 
   return (
