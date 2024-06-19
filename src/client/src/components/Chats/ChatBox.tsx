@@ -4,7 +4,7 @@ import { socket } from '../../socket';
 import ChatForm from './ChatForm';
 
 export default function ChatBox(): JSX.Element {
-  const [messages, setMessages] = useState<Array<{ message: string }>>([]);
+  const [messages, setMessages] = useState<Array<{ text: string }>>([]);
 
   useEffect(() => {
     socket.on('message-client', (data: any) => {
@@ -13,7 +13,7 @@ export default function ChatBox(): JSX.Element {
   }, []);
 
   const renderedMessages = messages.map((message) => {
-    return <div className="chat-message">{message.message}</div>;
+    return <div className="chat-message">{message.text}</div>;
   });
 
   return (
