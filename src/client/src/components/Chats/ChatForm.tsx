@@ -5,10 +5,10 @@ export default function ChatForm(): JSX.Element {
   const [text, setText] = useState('');
 
   const handleEnterPress = (e: KeyboardEvent | FormEvent): void => {
-    console.log(text);
     if ((e as KeyboardEvent).key === 'Enter') {
       e.preventDefault();
       handleSubmit(e as FormEvent<HTMLFormElement>);
+      setText('');
     }
   };
 
@@ -28,6 +28,7 @@ export default function ChatForm(): JSX.Element {
         name="message"
         className="chat-form-input"
         onKeyDown={handleEnterPress}
+        value={text}
       />
       <button>SEND</button>
     </form>
