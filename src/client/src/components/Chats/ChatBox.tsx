@@ -1,13 +1,22 @@
 import './assets/styles.scss';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { socket } from '../../socket';
+import { MessageType } from '../../socket/types';
 import ChatForm from './ChatForm';
 
 export default function ChatBox(): JSX.Element {
   const [messages, setMessages] = useState<Array<{ text: string }>>([]);
 
+  const { roomId } = useParams();
+
   useEffect(() => {
-    socket.on('message-client', (data: any) => {
+    socket.emit(
+      MessageType.RoomConnection,
+      JSON.stringify({ roomId, message: 'user connected' })
+    );
+
+    socket.on(MessageType.ChatMessage, (data: any) => {
       setMessages((prevState) => [...prevState, JSON.parse(data)]);
     });
   }, []);

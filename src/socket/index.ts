@@ -3,12 +3,13 @@ import { MessageType, Rooms } from './types';
 
 export const io = (socketIO: Socket) => {
   const rooms: Rooms = {};
-  socketIO.on('connection', (socket) => {
+  socketIO.on(MessageType.Connection, (socket) => {
     console.log(socket.id, 'just connected');
 
     socket.on(MessageType.RoomConnection, (data: any) => {
-      if (data.roomId && !rooms[data.roomId]) rooms[data.roomId] = [];
-      if (data.roomId && !rooms[data.roomId].includes(socket)) {
+      const { roomId } = JSON.parse(data);
+      if (roomId && !rooms[data.roomId]) rooms[roomId] = [];
+      if (roomId && !rooms[roomId].includes(socket)) {
         rooms[data.roomId].push(socket);
       }
     });
@@ -24,7 +25,6 @@ export const io = (socketIO: Socket) => {
     socket.on(
       MessageType.ChatMessage || MessageType.ChatAnnouncement,
       (data: any) => {
-        // socketIO.emit('message-client', data);
         if (rooms[data.roomId]) {
           rooms[data.roomId].forEach((client: Socket) => {
             client.emit(MessageType.ChatMessage, data);

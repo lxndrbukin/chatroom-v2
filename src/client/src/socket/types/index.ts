@@ -1,9 +1,3 @@
-import { Socket } from 'socket.io';
-
-export type Rooms = {
-  [key: string]: Array<Socket>;
-};
-
 export enum MessageType {
   TotalOnline = 'totalOnline',
   ChatMessage = 'chatMessage',
