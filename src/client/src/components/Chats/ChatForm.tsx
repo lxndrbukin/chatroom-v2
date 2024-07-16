@@ -2,26 +2,27 @@ import { FormEvent, useState, ChangeEvent } from 'react';
 import { useParams } from 'react-router-dom';
 import { socket } from '../../socket';
 import { MessageType } from '../../socket/types';
+import { BsSend } from 'react-icons/bs';
 
 export default function ChatForm(): JSX.Element {
-  const [chatMsg, setChatMsg] = useState('');
+  const [msg, setMsg] = useState('');
   const { roomId } = useParams();
 
   const handleEnterPress = (e: KeyboardEvent | FormEvent): void => {
     if ((e as KeyboardEvent).key === 'Enter') {
       e.preventDefault();
       handleSubmit(e as FormEvent<HTMLFormElement>);
-      setChatMsg('');
+      setMsg('');
     }
   };
 
   const handleChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setChatMsg(e.target.value);
+    setMsg(e.target.value);
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    socket.emit(MessageType.ChatMessage, JSON.stringify({ roomId, chatMsg }));
+    socket.emit(MessageType.ChatMessage, JSON.stringify({ roomId, msg }));
   };
 
   return (
@@ -31,9 +32,12 @@ export default function ChatForm(): JSX.Element {
         name="message"
         className="chat-form-input"
         onKeyDown={handleEnterPress}
-        value={chatMsg}
+        value={msg}
+        placeholder="Your message"
       />
-      <button>SEND</button>
+      <button>
+        <BsSend />
+      </button>
     </form>
   );
 }

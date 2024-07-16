@@ -21,18 +21,22 @@ export const io = (socketIO: Socket) => {
     socket.on(MessageType.RoomDisconnection, ({ roomId }: any) => {
       if (rooms[roomId]) {
         rooms[roomId] = rooms[roomId].filter((user: Socket): boolean => {
-          return user !== socket;
+          return user.id !== socket.id;
+        });
+        rooms[roomId].forEach((client: Socket) => {
+          client.emit(MessageType.TotalOnline, {
+            totalOnline: rooms[roomId].length,
+          });
         });
       }
     });
     socket.on(
       MessageType.ChatMessage || MessageType.ChatAnnouncement,
       (data: any) => {
-        const { roomId, chatMsg } = JSON.parse(data);
+        const { roomId, msg } = JSON.parse(data);
         if (rooms[roomId]) {
-          console.log(chatMsg);
           rooms[roomId].forEach((client: Socket) => {
-            client.emit(MessageType.ChatMessage, JSON.stringify({ chatMsg }));
+            client.emit(MessageType.ChatMessage, JSON.stringify({ msg }));
           });
         }
       }

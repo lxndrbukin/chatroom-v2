@@ -4,9 +4,10 @@ import { useParams } from 'react-router-dom';
 import { socket } from '../../socket';
 import { MessageType } from '../../socket/types';
 import ChatForm from './ChatForm';
+import ChatMessage from './ChatMessage';
 
 export default function ChatBox(): JSX.Element {
-  const [messages, setMessages] = useState<Array<{ chatMsg: string }>>([]);
+  const [messages, setMessages] = useState<Array<{ msg: string }>>([]);
   const [totalOnline, setTotalOnline] = useState(0);
   const { roomId } = useParams();
 
@@ -24,10 +25,14 @@ export default function ChatBox(): JSX.Element {
       console.log(data);
       setMessages((prevState) => [...prevState, JSON.parse(data)]);
     });
+
+    window.addEventListener('beforeunload', () => {
+      socket.emit(MessageType.RoomDisconnection, { roomId });
+    });
   }, []);
 
   const renderedMessages = messages.map((message) => {
-    return <div className="chat-message">{message.chatMsg}</div>;
+    return <ChatMessage {...message} />;
   });
 
   return (
