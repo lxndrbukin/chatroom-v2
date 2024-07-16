@@ -4,7 +4,7 @@
   height: 100%;
   width: 100%;
   display: grid;
-  grid-template-rows: 1fr 70px;
+  grid-template-rows: min-content 1fr 70px;
 
   .chat-messages {
     background-color: $light-grey;

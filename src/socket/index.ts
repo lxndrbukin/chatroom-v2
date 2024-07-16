@@ -8,29 +8,45 @@ export const io = (socketIO: Socket) => {
 
     socket.on(MessageType.RoomConnection, (data: any) => {
       const { roomId } = JSON.parse(data);
-      if (roomId && !rooms[data.roomId]) rooms[roomId] = [];
+      if (roomId && !rooms[roomId]) rooms[roomId] = [];
       if (roomId && !rooms[roomId].includes(socket)) {
-        rooms[data.roomId].push(socket);
+        rooms[roomId].push(socket);
       }
+      rooms[roomId].forEach((client: Socket) => {
+        client.emit(MessageType.TotalOnline, {
+          totalOnline: rooms[roomId].length,
+        });
+      });
     });
-    socket.on(MessageType.RoomDisconnection, (data: any) => {
-      if (rooms[data.roomId]) {
-        rooms[data.roomId] = rooms[data.roomId].filter(
-          (user: Socket): boolean => {
-            return user !== socket;
-          }
-        );
+    socket.on(MessageType.RoomDisconnection, ({ roomId }: any) => {
+      if (rooms[roomId]) {
+        rooms[roomId] = rooms[roomId].filter((user: Socket): boolean => {
+          return user !== socket;
+        });
       }
     });
     socket.on(
       MessageType.ChatMessage || MessageType.ChatAnnouncement,
       (data: any) => {
-        if (rooms[data.roomId]) {
-          rooms[data.roomId].forEach((client: Socket) => {
-            client.emit(MessageType.ChatMessage, data);
+        const { roomId, chatMsg } = JSON.parse(data);
+        if (rooms[roomId]) {
+          console.log(chatMsg);
+          rooms[roomId].forEach((client: Socket) => {
+            client.emit(MessageType.ChatMessage, JSON.stringify({ chatMsg }));
           });
         }
       }
     );
+    socket.on(MessageType.TotalOnline, (data: any) => {
+      const { roomId } = JSON.parse(data);
+      if (rooms[roomId]) {
+        rooms[roomId].forEach((client: Socket) => {
+          client.emit(
+            MessageType.TotalOnline,
+            JSON.stringify({ totalOnline: rooms[roomId].length })
+          );
+        });
+      }
+    });
   });
 };
