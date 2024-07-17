@@ -1,6 +1,4 @@
-type ChatMessageProps = {
-  msg: string;
-};
+import { ChatMessageProps } from './types';
 
 export default function ChatMessage({ msg }: ChatMessageProps): JSX.Element {
   const avatarPlaceholder =
