@@ -1,0 +1,64 @@
+@import '../../../assets/variables.scss';
+
+.chat-box {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: min-content 1fr 70px;
+
+  .chat-messages {
+    width: 100%;
+    display: grid;
+    grid-auto-rows: min-content;
+    gap: 15px;
+
+    .chat-message {
+      max-width: 50%;
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 40px 1fr;
+
+      .chat-message-avatar {
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      .chat-message-text {
+        background-color: $grey;
+        border-radius: 7px;
+        padding: 10px 15px;
+        word-wrap: break-word;
+        width: fit-content;
+      }
+    }
+  }
+
+  .chat-form {
+    display: grid;
+    grid-template-columns: 1fr 50px;
+    margin: 10px;
+    background-color: $grey;
+    border-radius: 7px;
+
+    .chat-form-input {
+      padding: 10px;
+      border: none;
+      background-color: transparent;
+      resize: none;
+
+      &:focus {
+        outline: none;
+      }
+    }
+
+    button {
+      background-color: transparent;
+      cursor: pointer;
+      border: none;
+      font-size: 24px;
+      display: grid;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
