@@ -22,7 +22,7 @@ export default function ChatForm(): JSX.Element {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    socket.emit(MessageType.ChatMessage, JSON.stringify({ roomId, msg }));
+    socket.emit(MessageType.ChatMessage, { roomId, msg });
   };
 
   return (

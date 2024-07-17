@@ -1,13 +1,12 @@
 import { Socket } from 'socket.io';
-import { MessageType, Rooms } from './types';
+import { MessageType, Rooms, MessageProps } from './types';
 
 export const io = (socketIO: Socket) => {
   const rooms: Rooms = {};
   socketIO.on(MessageType.Connection, (socket) => {
     console.log(socket.id, 'just connected');
 
-    socket.on(MessageType.RoomConnection, (data: any) => {
-      const { roomId } = JSON.parse(data);
+    socket.on(MessageType.RoomConnection, ({ roomId }: MessageProps) => {
       if (roomId && !rooms[roomId]) rooms[roomId] = [];
       if (roomId && !rooms[roomId].includes(socket)) {
         rooms[roomId].push(socket);
@@ -18,7 +17,7 @@ export const io = (socketIO: Socket) => {
         });
       });
     });
-    socket.on(MessageType.RoomDisconnection, ({ roomId }: any) => {
+    socket.on(MessageType.RoomDisconnection, ({ roomId }: MessageProps) => {
       if (rooms[roomId]) {
         rooms[roomId] = rooms[roomId].filter((user: Socket): boolean => {
           return user.id !== socket.id;
@@ -32,23 +31,20 @@ export const io = (socketIO: Socket) => {
     });
     socket.on(
       MessageType.ChatMessage || MessageType.ChatAnnouncement,
-      (data: any) => {
-        const { roomId, msg } = JSON.parse(data);
+      ({ roomId, msg }: MessageProps) => {
         if (rooms[roomId]) {
           rooms[roomId].forEach((client: Socket) => {
-            client.emit(MessageType.ChatMessage, JSON.stringify({ msg }));
+            client.emit(MessageType.ChatMessage, { msg });
           });
         }
       }
     );
-    socket.on(MessageType.TotalOnline, (data: any) => {
-      const { roomId } = JSON.parse(data);
+    socket.on(MessageType.TotalOnline, ({ roomId }: MessageProps) => {
       if (rooms[roomId]) {
         rooms[roomId].forEach((client: Socket) => {
-          client.emit(
-            MessageType.TotalOnline,
-            JSON.stringify({ totalOnline: rooms[roomId].length })
-          );
+          client.emit(MessageType.TotalOnline, {
+            totalOnline: rooms[roomId].length,
+          });
         });
       }
     });

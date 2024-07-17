@@ -2,28 +2,25 @@ import './assets/styles.scss';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { socket } from '../../socket';
-import { MessageType } from '../../socket/types';
+import { MessageType, MessageProps } from '../../socket/types';
+import { ChatMessageProps } from './types';
 import ChatForm from './ChatForm';
 import ChatMessage from './ChatMessage';
 
 export default function ChatBox(): JSX.Element {
-  const [messages, setMessages] = useState<Array<{ msg: string }>>([]);
+  const [messages, setMessages] = useState<Array<ChatMessageProps>>([]);
   const [totalOnline, setTotalOnline] = useState(0);
   const { roomId } = useParams();
 
   useEffect(() => {
-    socket.on(MessageType.TotalOnline, (data: any) => {
-      setTotalOnline(data.totalOnline);
+    socket.on(MessageType.TotalOnline, ({ totalOnline }: MessageProps) => {
+      if (totalOnline) setTotalOnline(totalOnline);
     });
 
-    socket.emit(
-      MessageType.RoomConnection,
-      JSON.stringify({ roomId, message: 'user connected' })
-    );
+    socket.emit(MessageType.RoomConnection, { roomId, msg: 'user connected' });
 
-    socket.on(MessageType.ChatMessage, (data: any) => {
-      console.log(data);
-      setMessages((prevState) => [...prevState, JSON.parse(data)]);
+    socket.on(MessageType.ChatMessage, ({ msg }: MessageProps) => {
+      if (msg) setMessages((prevState) => [...prevState, { msg }]);
     });
 
     window.addEventListener('beforeunload', () => {

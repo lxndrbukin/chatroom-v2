@@ -9,3 +9,9 @@ export enum MessageType {
   RoomConnection = 'roomConnection',
   RoomDisconnection = 'roomDisconnection',
 }
+
+export type MessageProps = {
+  roomId: number;
+  msg?: string;
+  totalOnline?: number;
+};
