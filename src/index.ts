@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import { io } from './socket';
+import { mongoDB } from './mongodb';
 
 const app = express();
 app.use(cors());
@@ -13,6 +14,7 @@ const socketIO = require('socket.io')(server, {
 });
 
 io(socketIO);
+mongoDB();
 
 const PORT = process.env.PORT || 5000;
 
