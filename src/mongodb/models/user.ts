@@ -5,8 +5,8 @@ import { UserProps } from './types';
 
 const userSchema = new Schema<UserProps>(
   {
-    userId: String,
-    fullName: String,
+    userId: Number,
+    fullName: Object,
     email: { type: String, required: true },
     password: { type: String, required: true },
     avatar: {
@@ -22,6 +22,8 @@ const userSchema = new Schema<UserProps>(
 
 userSchema.plugin(passportLocalMongoose);
 
-const User = mongoose.model('users', userSchema);
+const User = mongoose.model<UserProps>('users', userSchema);
 
 passport.use(User.createStrategy());
+
+export default User;
