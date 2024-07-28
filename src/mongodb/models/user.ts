@@ -7,14 +7,14 @@ const userSchema = new Schema<UserProps>(
   {
     userId: Number,
     fullName: Object,
-    email: { type: String, required: true },
+    username: { type: String, required: true },
+    email: { type: String, default: null },
     password: { type: String, required: true },
     avatar: {
       type: String,
       default:
         'https://alumni.engineering.utoronto.ca/files/2022/05/Avatar-Placeholder-400x400-1.jpg',
     },
-    domain: { type: String, default: null },
     signedUp: { type: Number, default: new Date().getTime() },
   },
   { versionKey: false }

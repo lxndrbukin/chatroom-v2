@@ -1,7 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../components/App';
 import ChatBox from '../components/Chats/ChatBox';
-import AuthSignUp from '../components/Auth/AuthSignUp';
+import Auth from '../components/Auth/Auth';
 
 export const router = createBrowserRouter([
   {
@@ -10,7 +10,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/signup',
-        element: <AuthSignUp />,
+        element: <Auth />,
+      },
+      {
+        path: '/login',
+        element: <Auth />,
       },
       {
         path: '/rooms/:roomId',

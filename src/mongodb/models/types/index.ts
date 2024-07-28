@@ -5,7 +5,7 @@ export type UserProps = {
     lastName: string;
   };
   avatar: string;
-  domain: string;
+  username: string;
   email: string;
   password: string;
   signedUp: number;

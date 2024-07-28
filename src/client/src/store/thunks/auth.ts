@@ -1,15 +1,21 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 type AuthFormValues = {
-  email: string;
+  username: string;
   password: string;
+  confirmPassword?: string;
 };
 
 export const signup = createAsyncThunk(
   'session/signup',
-  async (formValues: AuthFormValues) => {
-    const res = await axios.post('/auth/signup', { ...formValues });
-    return res.data;
+  async (formValues: AuthFormValues, { rejectWithValue }) => {
+    try {
+      const res = await axios.post('/auth/signup', { ...formValues });
+      return res.data;
+    } catch (err) {
+      const error = err as AxiosError;
+      return rejectWithValue(error.response?.data);
+    }
   }
 );
