@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { SessionProps, SessionError, UserData } from './types';
-import { signup } from '../thunks/auth';
+import { auth } from '../thunks/auth';
 
 const initialState: SessionProps = {
   isLoggedIn: false,
@@ -14,12 +14,12 @@ const sessionSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
-      signup.fulfilled,
+      auth.fulfilled,
       (state: SessionProps, action: PayloadAction<UserData>) => {
         state.data = action.payload;
       }
     );
-    builder.addCase(signup.rejected, (state: SessionProps, action) => {
+    builder.addCase(auth.rejected, (state: SessionProps, action) => {
       state.error = action.payload as SessionError;
     });
   },

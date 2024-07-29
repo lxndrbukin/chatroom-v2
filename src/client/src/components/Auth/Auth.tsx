@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { AppDispatch, signup } from '../../store';
+import { AppDispatch, auth } from '../../store';
 import AuthForm from './AuthForm';
 import AuthFormInput from './assets/reusable/AuthFormInput';
 
@@ -20,10 +20,7 @@ export default function Auth(): JSX.Element {
 
   const handleSubmit = (e: FormEvent): void => {
     e.preventDefault();
-    switch (pathname) {
-      case '/signup':
-        dispatch(signup(formData));
-    }
+    dispatch(auth({ formData, pathname }));
   };
 
   const redirectText =
