@@ -20,29 +20,26 @@ export const authRoutes = async (app: Express): Promise<void> => {
         password: await createPassword(password),
       });
     }
-    req.session = {
-      userId: user.userId,
-      username: user.username,
-    } as UserSession;
-    passport.authenticate('local', { failureRedirect: '/login' })(
-      req,
-      res,
-      () => {
-        return res.send(user);
-      }
-    );
+    const { userId, username } = user;
+    req.session = { userId, username } as UserSession;
+    passport.authenticate('local', {
+      failureRedirect: '/login',
+      successRedirect: '/',
+    })(req, res, () => {
+      return res.send(user);
+    });
   });
 
   app.post('/auth/login', async (req, res) => {
     let user = await User.findOne({ username: req.body.username });
     if (user) {
-      passport.authenticate('local', { failureRedirect: '/login' })(
-        req,
-        res,
-        () => {
-          return res.send(user);
-        }
-      );
+      passport.authenticate('local', {
+        failureRedirect: '/login',
+        successRedirect: '/',
+      })(req, res, (err: Error) => {
+        if (err) console.log(err);
+        return res.send(user);
+      });
     }
   });
 };

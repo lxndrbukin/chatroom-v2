@@ -2,6 +2,8 @@ import passport from 'passport';
 import { UserProps } from '../mongodb/models/types';
 import User from '../mongodb/models/user';
 
+passport.use(User.createStrategy());
+
 passport.serializeUser((user, done): void => {
   done(null, (user as UserProps).userId);
 });
