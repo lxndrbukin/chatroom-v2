@@ -20,6 +20,42 @@
       user-select: none;
       text-decoration: none;
       color: $dark;
+      font-size: 20px;
+      font-weight: bold;
+      display: grid;
+      grid-template-columns: repeat(2, min-content);
+      gap: 5px;
+      align-items: center;
+
+      svg {
+        font-size: 22px;
+        padding: 8px;
+        background-color: $purple;
+        color: $white;
+        border-radius: 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .header-user {
+      .header-user-section {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+
+        .header-user-section-dropdown {
+          min-width: 250px;
+          min-height: 250px;
+          border: 1px solid $grey;
+          box-shadow: $box-shadow;
+          background-color: $white;
+          position: absolute;
+          right: 0;
+          top: 30px;
+        }
+      }
     }
   }
 }
