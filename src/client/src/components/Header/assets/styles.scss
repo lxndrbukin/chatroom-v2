@@ -1,0 +1,106 @@
+@import '../../../assets/variables.scss';
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  border-bottom: 1px solid $grey;
+
+  .header-container {
+    display: flex;
+    gap: calc($spacing-lg * 2);
+    width: 100%;
+    max-width: $max-width;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+
+    .header-logo {
+      display: inline-block;
+      user-select: none;
+      text-decoration: none;
+      color: $dark;
+      font-size: 20px;
+      font-weight: bold;
+      display: grid;
+      grid-template-columns: repeat(2, min-content);
+      gap: 5px;
+      align-items: center;
+
+      svg {
+        font-size: 22px;
+        padding: 8px;
+        background-color: $purple;
+        color: $white;
+        border-radius: 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+
+    .header-search {
+      width: 100%;
+      max-width: 400px;
+      height: 38px;
+      display: grid;
+      grid-template-columns: 1fr 40px;
+      border-radius: $border-r7;
+      overflow: hidden;
+
+      input {
+        border: none;
+        background-color: $grey;
+        padding: 0 0 0 $spacing-lg;
+        font-size: 15px;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      button {
+        border: none;
+        background-color: $grey;
+        display: grid;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+
+        svg {
+          font-size: 22px;
+          color: $dark-grey;
+        }
+      }
+    }
+
+    .header-user {
+      .header-user-section {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        height: 100%;
+        width: 50px;
+
+        .header-user-section-icon {
+          display: grid;
+          align-items: center;
+          justify-content: center;
+          color: $dark-grey;
+        }
+
+        .header-user-section-dropdown {
+          min-width: 250px;
+          min-height: 250px;
+          border: 1px solid $grey;
+          box-shadow: $box-shadow;
+          background-color: $white;
+          position: absolute;
+          right: 0;
+          top: 30px;
+        }
+      }
+    }
+  }
+}
