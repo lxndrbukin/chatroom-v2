@@ -5,7 +5,9 @@ export default function App(): JSX.Element {
   return (
     <main className="app">
       <Header />
-      <Outlet />
+      <div className="container">
+        <Outlet />
+      </div>
     </main>
   );
 }

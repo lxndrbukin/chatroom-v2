@@ -2,7 +2,7 @@ import './assets/styles.scss';
 import { Link } from 'react-router-dom';
 import HeaderSearch from './HeaderSearch';
 import HeaderUserSection from './HeaderUserSection';
-import { PiUserCircle } from 'react-icons/pi';
+import { FaUserCircle } from 'react-icons/fa';
 import { BsChatRightFill } from 'react-icons/bs';
 
 export default function Header(): JSX.Element {
@@ -15,7 +15,7 @@ export default function Header(): JSX.Element {
         </Link>
         <HeaderSearch />
         <div className="header-user">
-          <HeaderUserSection icon={PiUserCircle} />
+          <HeaderUserSection icon={FaUserCircle} />
         </div>
       </div>
     </header>

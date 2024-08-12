@@ -10,5 +10,9 @@ body {
     height: 100vh;
     display: grid;
     grid-template-rows: 50px 1fr;
+
+    .container {
+      background-color: $light-grey;
+    }
   }
 }
