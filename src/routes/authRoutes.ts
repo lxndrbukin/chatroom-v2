@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { Express } from 'express';
+import { Express, Request, Response } from 'express';
 import User from '../mongodb/models/user';
 import { UserSession } from './types';
 import { createPassword } from './helpers';
@@ -20,7 +20,7 @@ export const authRoutes = async (app: Express): Promise<void> => {
         password: await createPassword(password),
       });
     }
-    req.session = {
+    (req.session as UserSession) = {
       userId: user.userId,
       username: user.username,
     } as UserSession;
@@ -33,7 +33,7 @@ export const authRoutes = async (app: Express): Promise<void> => {
     );
   });
 
-  app.post('/auth/login', async (req, res) => {
+  app.post('/auth/login', async (req: Request, res: Response) => {
     let user = await User.findOne({ username: req.body.username });
     if (user) {
       passport.authenticate('local', { failureRedirect: '/login' })(
@@ -44,5 +44,20 @@ export const authRoutes = async (app: Express): Promise<void> => {
         }
       );
     }
+  });
+
+  app.get('/_api/current_user', async (req: Request, res: Response) => {
+    if (req.session && (req.session as UserSession)!.userId) {
+      const currentUser = await User.findOne({
+        userId: (req.session as UserSession)!.userId,
+      }).select('-_id -pasword -__v');
+      if (currentUser) return res.send(currentUser);
+    }
+    return res.send(null);
+  });
+
+  app.get('/logout', (req: Request, res: Response) => {
+    (req.session as UserSession) = null;
+    res.send({});
   });
 };

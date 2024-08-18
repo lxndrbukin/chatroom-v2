@@ -15,7 +15,7 @@ export default function ChatMembers(): JSX.Element {
     <div className="chat-members">
       <div className="chat-members-status">
         <div className="chat-members-status-indicator">
-          <span className="online"></span> {totalOnline} members
+          <span className="online"></span> Online: {totalOnline}
         </div>
       </div>
       <div className="chat-members-list"></div>
