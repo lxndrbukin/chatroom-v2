@@ -12,3 +12,4 @@ export type AppDispatch = typeof store.dispatch;
 
 export * from './slices/sessionSlice';
 export * from './thunks/auth';
+export * from './thunks/currentUser';

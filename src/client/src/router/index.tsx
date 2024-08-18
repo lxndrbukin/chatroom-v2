@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../components/App';
-import ChatBox from '../components/Chats/ChatBox';
+import Chat from '../components/Chats/Chat';
 import Auth from '../components/Auth/Auth';
 
 export const router = createBrowserRouter([
@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/rooms/:roomId',
-        element: <ChatBox />,
+        element: <Chat />,
       },
     ],
   },
