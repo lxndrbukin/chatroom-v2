@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { AppDispatch, auth } from '../../store';
+import { useLocation, Navigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState, auth } from '../../store';
 import AuthForm from './AuthForm';
 import AuthFormInput from './assets/reusable/AuthFormInput';
 
@@ -12,6 +12,7 @@ export default function Auth(): JSX.Element {
     username: '',
     password: '',
   });
+  const { isLoggedIn } = useSelector((state: RootState) => state.session);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,6 +42,10 @@ export default function Auth(): JSX.Element {
       <AuthFormInput key={field.name} onChange={handleInputChange} {...field} />
     );
   });
+
+  if (isLoggedIn) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <AuthForm
