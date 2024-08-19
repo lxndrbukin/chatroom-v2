@@ -10,7 +10,7 @@ type AuthData = {
 };
 
 export const auth = createAsyncThunk(
-  'session/signup',
+  'session/auth',
   async ({ formData, pathname }: AuthData, { rejectWithValue }) => {
     try {
       const res = await axios.post(`/auth${pathname}`, { ...formData });
@@ -21,3 +21,8 @@ export const auth = createAsyncThunk(
     }
   }
 );
+
+export const logout = createAsyncThunk('session/logout', async () => {
+  const res = await axios.get('/auth/logout');
+  return res.data;
+});

@@ -24,25 +24,31 @@ export const authRoutes = async (app: Express): Promise<void> => {
       userId: user.userId,
       username: user.username,
     } as UserSession;
-    passport.authenticate('local', { failureRedirect: '/login' })(
-      req,
-      res,
-      () => {
-        return res.send(user);
-      }
-    );
+    // passport.authenticate('local', { failureRedirect: '/login' })(
+    //   req,
+    //   res,
+    //   () => {
+    //     return res.send(user);
+    //   }
+    // );
+    return res.send(user);
   });
 
   app.post('/auth/login', async (req: Request, res: Response) => {
     let user = await User.findOne({ username: req.body.username });
     if (user) {
-      passport.authenticate('local', { failureRedirect: '/login' })(
-        req,
-        res,
-        () => {
-          return res.send(user);
-        }
-      );
+      (req.session as UserSession) = {
+        userId: user.userId,
+        username: user.username,
+      } as UserSession;
+      // passport.authenticate('local', { failureRedirect: '/login' })(
+      //   req,
+      //   res,
+      //   () => {
+      //     return res.send(user);
+      //   }
+      // );
+      return res.send(user);
     }
   });
 
@@ -53,10 +59,10 @@ export const authRoutes = async (app: Express): Promise<void> => {
       }).select('-_id -pasword -__v');
       if (currentUser) return res.send(currentUser);
     }
-    return res.send(null);
+    return res.status(403).send({ message: 'Not logged in' });
   });
 
-  app.get('/logout', (req: Request, res: Response) => {
+  app.get('/auth/logout', (req: Request, res: Response) => {
     (req.session as UserSession) = null;
     res.send({});
   });

@@ -76,6 +76,15 @@
     }
 
     .header-user {
+      .header-user-auth-btn {
+        background-color: $purple;
+        color: $white;
+        text-decoration: none;
+        padding: $spacing-md $spacing-lg;
+        border-radius: $border-r7;
+        font-weight: bold;
+      }
+
       .header-user-section {
         display: flex;
         flex-direction: column;
@@ -88,6 +97,7 @@
           align-items: center;
           justify-content: center;
           color: $dark-grey;
+          cursor: pointer;
         }
 
         .header-user-section-dropdown {

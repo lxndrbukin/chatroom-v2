@@ -1,19 +1,30 @@
 import './assets/styles.scss';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch, logout } from '../../store';
 import HeaderSearch from './HeaderSearch';
 import HeaderUserSection from './HeaderUserSection';
 import { FaUserCircle } from 'react-icons/fa';
 import { BsChatRightFill } from 'react-icons/bs';
 
 export default function Header(): JSX.Element {
+  const dispatch = useDispatch<AppDispatch>();
   const { isLoggedIn, data } = useSelector((state: RootState) => state.session);
 
-  const loginBtn = <button className="header-auth-btn">Login</button>;
+  const loginBtn = (
+    <Link to="/login" className="header-user-auth-btn">
+      Login
+    </Link>
+  );
+
+  const handleLogout = (): void => {
+    dispatch(logout());
+  };
 
   const userSection = isLoggedIn ? (
-    <HeaderUserSection icon={FaUserCircle} />
+    <HeaderUserSection icon={FaUserCircle}>
+      <button onClick={handleLogout}>Logout</button>
+    </HeaderUserSection>
   ) : (
     loginBtn
   );
