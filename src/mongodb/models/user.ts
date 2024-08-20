@@ -1,6 +1,4 @@
 import mongoose, { Schema } from 'mongoose';
-import passport from 'passport';
-import passportLocalMongoose from 'passport-local-mongoose';
 import { UserProps } from './types';
 
 const userSchema = new Schema<UserProps>(
@@ -20,10 +18,6 @@ const userSchema = new Schema<UserProps>(
   { versionKey: false }
 );
 
-userSchema.plugin(passportLocalMongoose);
-
 const User = mongoose.model<UserProps>('users', userSchema);
-
-passport.use(User.createStrategy());
 
 export default User;

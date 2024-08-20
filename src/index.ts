@@ -1,7 +1,6 @@
 import express from 'express';
 import cors from 'cors';
 import http from 'http';
-import passport from 'passport';
 import session from 'express-session';
 import cookieSession from 'cookie-session';
 import { keys } from './keys';
@@ -10,7 +9,6 @@ import { mongoDB } from './mongodb';
 import { authRoutes } from './routes/authRoutes';
 
 require('./mongodb/models/user');
-require('./services/passport');
 
 const app = express();
 app.use(cors());
@@ -23,9 +21,6 @@ app.use(
     keys: [keys.cookieKey],
   })
 );
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(
   session({

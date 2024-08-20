@@ -1,4 +1,3 @@
-import passport from 'passport';
 import { Express, Request, Response } from 'express';
 import User from '../mongodb/models/user';
 import { UserSession } from './types';
@@ -24,13 +23,6 @@ export const authRoutes = async (app: Express): Promise<void> => {
       userId: user.userId,
       username: user.username,
     } as UserSession;
-    // passport.authenticate('local', { failureRedirect: '/login' })(
-    //   req,
-    //   res,
-    //   () => {
-    //     return res.send(user);
-    //   }
-    // );
     return res.send(user);
   });
 
@@ -41,13 +33,6 @@ export const authRoutes = async (app: Express): Promise<void> => {
         userId: user.userId,
         username: user.username,
       } as UserSession;
-      // passport.authenticate('local', { failureRedirect: '/login' })(
-      //   req,
-      //   res,
-      //   () => {
-      //     return res.send(user);
-      //   }
-      // );
       return res.send(user);
     }
   });
