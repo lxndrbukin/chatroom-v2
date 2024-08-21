@@ -6,7 +6,7 @@ import { getCurrentUser } from '../thunks/currentUser';
 const initialState: SessionProps = {
   isLoggedIn: false,
   data: undefined,
-  error: undefined,
+  errors: undefined,
 };
 
 const sessionSlice = createSlice({
@@ -22,7 +22,7 @@ const sessionSlice = createSlice({
       }
     );
     builder.addCase(auth.rejected, (state: SessionProps, action) => {
-      state.error = action.payload as SessionError;
+      state.errors = action.payload as SessionError;
     });
     builder.addCase(logout.fulfilled, (state: SessionProps) => {
       state.isLoggedIn = false;

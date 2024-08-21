@@ -10,11 +10,11 @@ export type UserData = {
 };
 
 export type SessionError = {
-  message: string;
+  [key: string]: string;
 };
 
 export type SessionProps = {
   isLoggedIn: boolean;
   data: UserData | undefined;
-  error: SessionError | undefined;
+  errors: SessionError | undefined;
 };

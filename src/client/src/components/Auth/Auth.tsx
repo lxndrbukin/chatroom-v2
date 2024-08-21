@@ -13,7 +13,9 @@ export default function Auth(): JSX.Element {
     password: '',
     confirmPassword: '',
   });
-  const { isLoggedIn } = useSelector((state: RootState) => state.session);
+  const { isLoggedIn, errors } = useSelector(
+    (state: RootState) => state.session
+  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -41,7 +43,14 @@ export default function Auth(): JSX.Element {
 
   const renderedFields = inputFields.map((field) => {
     return (
-      <AuthFormInput key={field.name} onChange={handleInputChange} {...field} />
+      <div className="auth-form-input">
+        <AuthFormInput
+          key={field.name}
+          onChange={handleInputChange}
+          {...field}
+        />
+        {errors && errors[field.name]}
+      </div>
     );
   });
 

@@ -5,22 +5,24 @@ import { createPassword, checkPassword, comparePasswords } from './helpers';
 
 export const authRoutes = async (app: Express): Promise<void> => {
   app.post('/auth/signup', async (req, res) => {
-    let error = {};
+    let errors = {};
     let user = await User.findOne({ username: req.body.username });
     if (user) {
-      error = { ...error, username: ErrorMessages.UsernameInUse };
-      return res.status(403).send(error);
+      errors = { ...errors, username: ErrorMessages.UsernameInUse };
+      return res.status(403).send(errors);
     } else {
       const { username, password, confirmPassword } = req.body;
       const userId = (await User.countDocuments()) + 1;
-      if (!checkPassword(password)) {
-        error = { ...error, password: ErrorMessages.PasswordFormat };
-        return res.status(403).send(error);
+      if (!(await checkPassword(password))) {
+        errors = { ...errors, password: ErrorMessages.PasswordFormat };
       }
       if (password !== confirmPassword) {
-        error = { ...error, password: ErrorMessages.PasswordsDontMatch };
-        return res.status(403).send(error);
+        errors = {
+          ...errors,
+          confirmPassword: ErrorMessages.PasswordsDontMatch,
+        };
       }
+      if (Object.keys(errors).length !== 0) return res.status(403).send(errors);
       user = await User.create({
         userId,
         username,
@@ -35,6 +37,7 @@ export const authRoutes = async (app: Express): Promise<void> => {
   });
 
   app.post('/auth/login', async (req: Request, res: Response) => {
+    let errors = {};
     const { username, password, confirmPassword } = req.body;
     let user = await User.findOne({ username });
     if (
@@ -48,7 +51,8 @@ export const authRoutes = async (app: Express): Promise<void> => {
       } as UserSession;
       return res.send(user);
     }
-    return res.send({ message: ErrorMessages.UserNotFound });
+    errors = { ...errors, username: ErrorMessages.UserNotFound };
+    return res.send(errors);
   });
 
   app.get('/_api/current_user', async (req: Request, res: Response) => {
