@@ -11,6 +11,7 @@ export default function Auth(): JSX.Element {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
+    confirmPassword: '',
   });
   const { isLoggedIn } = useSelector((state: RootState) => state.session);
 
@@ -35,6 +36,7 @@ export default function Auth(): JSX.Element {
   const inputFields = [
     { name: 'username', placeholder: 'Username' },
     { name: 'password', placeholder: 'Password' },
+    { name: 'confirmPassword', placeholder: 'Confirm Password' },
   ];
 
   const renderedFields = inputFields.map((field) => {

@@ -1,18 +1,26 @@
 import { Express, Request, Response } from 'express';
 import User from '../mongodb/models/user';
-import { UserSession } from './types';
-import { createPassword } from './helpers';
+import { ErrorMessages, UserSession } from './types';
+import { createPassword, checkPassword, comparePasswords } from './helpers';
 
 export const authRoutes = async (app: Express): Promise<void> => {
   app.post('/auth/signup', async (req, res) => {
     let error = {};
     let user = await User.findOne({ username: req.body.username });
     if (user) {
-      error = { ...error, username: 'Username already in use.' };
+      error = { ...error, username: ErrorMessages.UsernameInUse };
       return res.status(403).send(error);
     } else {
-      const { username, password } = req.body;
+      const { username, password, confirmPassword } = req.body;
       const userId = (await User.countDocuments()) + 1;
+      if (!checkPassword(password)) {
+        error = { ...error, password: ErrorMessages.PasswordFormat };
+        return res.status(403).send(error);
+      }
+      if (password !== confirmPassword) {
+        error = { ...error, password: ErrorMessages.PasswordsDontMatch };
+        return res.status(403).send(error);
+      }
       user = await User.create({
         userId,
         username,
@@ -27,14 +35,20 @@ export const authRoutes = async (app: Express): Promise<void> => {
   });
 
   app.post('/auth/login', async (req: Request, res: Response) => {
-    let user = await User.findOne({ username: req.body.username });
-    if (user) {
+    const { username, password, confirmPassword } = req.body;
+    let user = await User.findOne({ username });
+    if (
+      user &&
+      (await comparePasswords(user.password, password)) &&
+      (await comparePasswords(user.password, confirmPassword))
+    ) {
       (req.session as UserSession) = {
         userId: user.userId,
         username: user.username,
       } as UserSession;
       return res.send(user);
     }
+    return res.send({ message: ErrorMessages.UserNotFound });
   });
 
   app.get('/_api/current_user', async (req: Request, res: Response) => {
@@ -44,7 +58,7 @@ export const authRoutes = async (app: Express): Promise<void> => {
       }).select('-_id -pasword -__v');
       if (currentUser) return res.send(currentUser);
     }
-    return res.status(403).send({ message: 'Not logged in' });
+    return res.status(403).send({ message: ErrorMessages.NotLoggedIn });
   });
 
   app.get('/auth/logout', (req: Request, res: Response) => {
