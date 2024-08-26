@@ -5,7 +5,8 @@ import { RootState, AppDispatch, logout } from '../../store';
 import HeaderSearch from './HeaderSearch';
 import HeaderUserSection from './HeaderUserSection';
 import { FaUserCircle } from 'react-icons/fa';
-import { BsChatRightFill } from 'react-icons/bs';
+import { AiFillMessage } from 'react-icons/ai';
+import { FiLogIn } from 'react-icons/fi';
 
 export default function Header(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,7 +14,7 @@ export default function Header(): JSX.Element {
 
   const loginBtn = (
     <Link to="/login" className="header-user-auth-btn">
-      Login
+      <FiLogIn />
     </Link>
   );
 
@@ -33,7 +34,7 @@ export default function Header(): JSX.Element {
     <header className="header">
       <div className="header-container">
         <Link to="/" className="header-logo">
-          <BsChatRightFill />
+          <AiFillMessage />
           ChatRoom
         </Link>
         <HeaderSearch />

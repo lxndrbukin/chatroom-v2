@@ -21,8 +21,8 @@
         width: 100%;
         box-sizing: border-box;
         height: 45px;
-        border-radius: 7px;
-        border: 1px solid $dark;
+        border: 1px solid $dark-grey;
+        border-radius: $border-r7;
         font-size: 16px;
         padding: 3px 10px;
 
@@ -30,13 +30,19 @@
           outline: none;
         }
       }
+
+      .auth-form-input-error {
+        padding: $spacing-sm $spacing-md;
+        color: $red;
+        font-size: 14px;
+      }
     }
 
     button {
       height: 45px;
-      border: 1px solid $dark;
+      border: 1px solid $dark-blue;
       border-radius: 7px;
-      background-color: $purple;
+      background-color: $blue;
       color: $white;
       font-weight: bold;
       font-size: 16px;

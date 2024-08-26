@@ -41,7 +41,7 @@ export default function Auth(): JSX.Element {
     { name: 'confirmPassword', placeholder: 'Confirm Password' },
   ];
 
-  const renderedFields = inputFields.map((field) => {
+  const renderedFields = inputFields.map((field): JSX.Element => {
     return (
       <div className="auth-form-input">
         <AuthFormInput
@@ -49,7 +49,10 @@ export default function Auth(): JSX.Element {
           onChange={handleInputChange}
           {...field}
         />
-        {errors && errors[field.name]}
+
+        {errors && (
+          <div className="auth-form-input-error">{errors[field.name]}</div>
+        )}
       </div>
     );
   });
