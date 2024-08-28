@@ -12,7 +12,11 @@ const initialState: SessionProps = {
 const sessionSlice = createSlice({
   name: 'session',
   initialState,
-  reducers: {},
+  reducers: {
+    handleAuthErrors: (state: SessionProps, action) => {
+      state.errors = { ...state.errors, ...action.payload };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       auth.fulfilled,
@@ -28,7 +32,7 @@ const sessionSlice = createSlice({
       state.isLoggedIn = false;
       state.data = undefined;
     });
-    builder.addCase(getCurrentUser.fulfilled, (state, action) => {
+    builder.addCase(getCurrentUser.fulfilled, (state: SessionProps, action) => {
       state.isLoggedIn = true;
       state.data = action.payload;
     });
@@ -36,3 +40,4 @@ const sessionSlice = createSlice({
 });
 
 export default sessionSlice.reducer;
+export const { handleAuthErrors } = sessionSlice.actions;
