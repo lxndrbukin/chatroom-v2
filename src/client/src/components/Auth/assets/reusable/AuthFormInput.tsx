@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, handleAuthErrors } from '../../../../store';
 
@@ -14,27 +14,30 @@ export default function AuthFormInput({
 }: AuthFormInputProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const [inputValue, setInputValue] = useState('');
-  const [showError, setShowError] = useState(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setInputValue(e.target.value);
+    console.log(inputValue);
   };
 
-  const handleBlur = (e: FocusEvent) => {
-    if (!inputValue.length) {
-      setShowError(true);
-      if (showError) {
-        dispatch(
-          handleAuthErrors({
-            [name]: `${placeholder} field should not be empty`,
-          })
-        );
-      }
+  const showErrorMessage = (
+    name: string,
+    showError: boolean,
+    placeholder?: string
+  ): void => {
+    if (showError && inputValue.length === 0) {
+      dispatch(
+        handleAuthErrors({
+          [name]: `${placeholder} field should not be empty`,
+        })
+      );
     }
-  };
-
-  const showErrorMessage = (name: string, placeholder?: string): void => {
-    if (!showError && !inputValue.length) {
+    if (inputValue.length !== 0) {
+      dispatch(
+        handleAuthErrors({
+          [name]: undefined,
+        })
+      );
     }
   };
 
@@ -42,9 +45,9 @@ export default function AuthFormInput({
     <>
       <label>{label}</label>
       <input
-        onChange={handleChange}
-        onBlur={handleBlur}
-        onSelect={() => showErrorMessage(name)}
+        onBlur={() => showErrorMessage(name, true, placeholder)}
+        onClick={() => showErrorMessage(name, false)}
+        onSelect={handleChange}
         {...props}
         name={name}
         placeholder={placeholder}

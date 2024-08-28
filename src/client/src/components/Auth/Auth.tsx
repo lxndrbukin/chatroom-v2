@@ -49,7 +49,6 @@ export default function Auth(): JSX.Element {
           onChange={handleInputChange}
           {...field}
         />
-
         {errors && (
           <div className="auth-form-input-error">{errors[field.name]}</div>
         )}
