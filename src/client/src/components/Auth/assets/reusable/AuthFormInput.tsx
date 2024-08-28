@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, FocusEvent, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { AppDispatch, handleAuthErrors } from '../../../../store';
 
@@ -13,19 +13,28 @@ export default function AuthFormInput({
   ...props
 }: AuthFormInputProps): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
-  const [inputs, setInputs] = useState();
+  const [inputValue, setInputValue] = useState('');
+  const [showError, setShowError] = useState(false);
 
-  const handleError = (
-    name: string,
-    showError: boolean,
-    placeholder?: string
-  ): void => {
-    if (showError) {
-      dispatch(
-        handleAuthErrors({ [name]: `${placeholder} field should not be empty` })
-      );
-    } else {
-      dispatch(handleAuthErrors({ [name]: undefined }));
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setInputValue(e.target.value);
+  };
+
+  const handleBlur = (e: FocusEvent) => {
+    if (!inputValue.length) {
+      setShowError(true);
+      if (showError) {
+        dispatch(
+          handleAuthErrors({
+            [name]: `${placeholder} field should not be empty`,
+          })
+        );
+      }
+    }
+  };
+
+  const showErrorMessage = (name: string, placeholder?: string): void => {
+    if (!showError && !inputValue.length) {
     }
   };
 
@@ -33,8 +42,9 @@ export default function AuthFormInput({
     <>
       <label>{label}</label>
       <input
-        onBlur={() => handleError(name, true, placeholder)}
-        onSelect={() => handleError(name, false)}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        onSelect={() => showErrorMessage(name)}
         {...props}
         name={name}
         placeholder={placeholder}
