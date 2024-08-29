@@ -1,21 +1,44 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, auth } from '../../store';
+import { AppDispatch, RootState, auth, handleAuthErrors } from '../../store';
+
 import AuthForm from './AuthForm';
 import AuthFormInput from './assets/reusable/AuthFormInput';
 
 export default function Auth(): JSX.Element {
   const dispatch = useDispatch<AppDispatch>();
   const { pathname } = useLocation();
-  const [formData, setFormData] = useState({
+  const { isLoggedIn, errors } = useSelector(
+    (state: RootState) => state.session
+  );
+  const [formData, setFormData] = useState<any>({
     username: '',
     password: '',
     confirmPassword: '',
   });
-  const { isLoggedIn, errors } = useSelector(
-    (state: RootState) => state.session
-  );
+
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    const { name, placeholder } = e.target;
+    if (formData[name].length === 0) {
+      dispatch(
+        handleAuthErrors({
+          [name]: `${placeholder} field should not be empty`,
+        })
+      );
+    } else return;
+  };
+
+  const handleSelect = (e: FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    if (errors![name]) {
+      dispatch(
+        handleAuthErrors({
+          [name]: undefined,
+        })
+      );
+    }
+  };
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,6 +70,8 @@ export default function Auth(): JSX.Element {
         <AuthFormInput
           key={field.name}
           onChange={handleInputChange}
+          onBlur={handleBlur}
+          onSelect={handleSelect}
           {...field}
         />
         {errors && (
