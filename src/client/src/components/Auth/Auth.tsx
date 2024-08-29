@@ -31,7 +31,7 @@ export default function Auth(): JSX.Element {
 
   const handleSelect = (e: FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
-    if (errors![name]) {
+    if (errors && errors[name]) {
       dispatch(
         handleAuthErrors({
           [name]: undefined,
