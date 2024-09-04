@@ -1,8 +1,9 @@
-import { ChangeEvent, FocusEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FocusEvent, FormEvent, useState, useEffect } from 'react';
 import { useLocation, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, auth, handleAuthErrors } from '../../store';
-
+import { AuthInputField } from './types';
+import { inputFields } from './assets/formData';
 import AuthForm from './AuthForm';
 import AuthFormInput from './assets/reusable/AuthFormInput';
 
@@ -17,6 +18,16 @@ export default function Auth(): JSX.Element {
     password: '',
     confirmPassword: '',
   });
+
+  useEffect(() => {
+    dispatch(
+      handleAuthErrors({
+        username: undefined,
+        password: undefined,
+        confirmPassword: undefined,
+      })
+    );
+  }, [pathname]);
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     const { name, placeholder } = e.target;
@@ -58,13 +69,10 @@ export default function Auth(): JSX.Element {
   const redirectURLText = pathname === '/signup' ? 'Login' : 'Sign Up';
   const buttonText = pathname === '/signup' ? 'Sign Up' : 'Login';
 
-  const inputFields = [
-    { name: 'username', placeholder: 'Username' },
-    { name: 'password', placeholder: 'Password' },
-    { name: 'confirmPassword', placeholder: 'Confirm Password' },
-  ];
-
-  const renderedFields = inputFields.map((field): JSX.Element => {
+  const renderedFields = inputFields.map((field): JSX.Element | undefined => {
+    if (field.displayRoute && field.displayRoute !== pathname) {
+      return;
+    }
     return (
       <div className="auth-form-input">
         <AuthFormInput
