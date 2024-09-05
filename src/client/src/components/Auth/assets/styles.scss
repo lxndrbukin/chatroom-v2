@@ -10,12 +10,17 @@
 
   .auth-form {
     display: grid;
-    // grid-auto-rows: 45px;
     gap: 10px;
     width: 350px;
 
     .auth-form-input {
       width: 100%;
+
+      &.error {
+        input {
+          border: 1px solid $red;
+        }
+      }
 
       input {
         width: 100%;

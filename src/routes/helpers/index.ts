@@ -21,7 +21,13 @@ export const comparePasswords = async (
 };
 
 export const checkPassword = async (password: string): Promise<boolean> => {
-  if (password.length >= 4 && password.length <= 20) {
+  const regularExpression =
+    /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+  if (
+    password.length >= 4 &&
+    password.length <= 20 &&
+    !regularExpression.test(password)
+  ) {
     return true;
   } else {
     return false;
