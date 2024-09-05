@@ -5,7 +5,7 @@ export enum ErrorMessages {
   UsernameInUse = 'Username already in use.',
   PasswordsDontMatch = 'Passwords do not match.',
   NotLoggedIn = 'Not logged in',
-  PasswordFormat = 'Incorrect Password format.',
+  PasswordFormat = 'Password should be between 4 and 20 characters long. Should not contain special characters.',
 }
 
 export type UserSession =

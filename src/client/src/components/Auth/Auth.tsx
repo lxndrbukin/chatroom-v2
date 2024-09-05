@@ -18,6 +18,7 @@ export default function Auth(): JSX.Element {
     password: '',
     confirmPassword: '',
   });
+  const [error, setShowError] = useState(false);
 
   useEffect(() => {
     dispatch(
@@ -32,9 +33,10 @@ export default function Auth(): JSX.Element {
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     const { name, placeholder } = e.target;
     if (formData[name].length === 0) {
+      setShowError(true);
       dispatch(
         handleAuthErrors({
-          [name]: `${placeholder} field should not be empty`,
+          [name]: `${placeholder} field should not be empty.`,
         })
       );
     } else return;
@@ -43,6 +45,7 @@ export default function Auth(): JSX.Element {
   const handleSelect = (e: FocusEvent<HTMLInputElement>) => {
     const { name } = e.target;
     if (errors && errors[name]) {
+      setShowError(false);
       dispatch(
         handleAuthErrors({
           [name]: undefined,
@@ -74,7 +77,11 @@ export default function Auth(): JSX.Element {
       return;
     }
     return (
-      <div className="auth-form-input">
+      <div
+        className={`auth-form-input ${
+          error && errors && errors[field.name] ? 'error' : ''
+        }`}
+      >
         <AuthFormInput
           key={field.name}
           onChange={handleInputChange}

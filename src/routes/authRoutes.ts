@@ -38,13 +38,9 @@ export const authRoutes = async (app: Express): Promise<void> => {
 
   app.post('/auth/login', async (req: Request, res: Response) => {
     let errors = {};
-    const { username, password, confirmPassword } = req.body;
-    let user = await User.findOne({ username });
-    if (
-      user &&
-      (await comparePasswords(user.password, password)) &&
-      (await comparePasswords(user.password, confirmPassword))
-    ) {
+    const { username, password } = req.body;
+    let user = await User.findOne({ username }).select(' -_id -password -__v');
+    if (user && (await comparePasswords(user.password, password))) {
       (req.session as UserSession) = {
         userId: user.userId,
         username: user.username,
@@ -59,7 +55,7 @@ export const authRoutes = async (app: Express): Promise<void> => {
     if (req.session && (req.session as UserSession)!.userId) {
       const currentUser = await User.findOne({
         userId: (req.session as UserSession)!.userId,
-      }).select('-_id -pasword -__v');
+      }).select('-_id -password -__v');
       if (currentUser) return res.send(currentUser);
     }
     return res.status(403).send({ message: ErrorMessages.NotLoggedIn });
