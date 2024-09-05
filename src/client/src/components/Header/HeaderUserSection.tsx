@@ -13,12 +13,18 @@ export default function HeaderUserSection({
   const iconRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     document.addEventListener('click', handleOutsideClick);
     return (): void =>
       document.removeEventListener('click', handleOutsideClick);
   }, []);
+
+  const handleInsideClick = (): void => {
+    setIsVisible(!isVisible);
+    setIsActive(!isActive);
+  };
 
   const handleOutsideClick = (e: MouseEvent): void => {
     if (
@@ -27,6 +33,7 @@ export default function HeaderUserSection({
       !dropdownRef.current?.contains(e.target as Element)
     ) {
       setIsVisible(false);
+      setIsActive(false);
     }
   };
 
@@ -37,14 +44,12 @@ export default function HeaderUserSection({
   );
 
   return (
-    <div className="header-user-section">
-      <div
-        ref={iconRef}
-        onClick={() => setIsVisible(!isVisible)}
-        className="header-user-section-icon"
-      >
-        {icon({ size: 30 })}
-      </div>
+    <div
+      ref={iconRef}
+      onClick={handleInsideClick}
+      className={`header-user-section ${isActive ? 'active' : ''}`}
+    >
+      <div className="header-user-section-icon">{icon({ size: 30 })}</div>
       {isVisible && dropdown}
     </div>
   );
