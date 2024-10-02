@@ -1,0 +1,25 @@
+@import '../../../assets/variables.scss';
+
+.rooms {
+  .rooms-grid {
+    height: 100%;
+    padding: $spacing-lg;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: 330px;
+    grid-auto-rows: 330px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 300px));
+    gap: $spacing-lg;
+    max-width: 100%;
+
+    .rooms-grid-room {
+      width: 100%;
+
+      .rooms-grid-room-cover {
+        height: 40%;
+        width: 100%;
+        background-color: $blue;
+      }
+    }
+  }
+}
