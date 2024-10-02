@@ -39,7 +39,7 @@ export const authRoutes = async (app: Express): Promise<void> => {
   app.post('/auth/login', async (req: Request, res: Response) => {
     let errors = {};
     const { username, password } = req.body;
-    let user = await User.findOne({ username }).select(' -_id -password -__v');
+    let user = await User.findOne({ username }).select(' -_id -__v');
     if (user && (await comparePasswords(user.password, password))) {
       (req.session as UserSession) = {
         userId: user.userId,

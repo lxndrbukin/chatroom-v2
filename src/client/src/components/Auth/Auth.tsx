@@ -14,9 +14,9 @@ export default function Auth(): JSX.Element {
     (state: RootState) => state.session
   );
   const [formData, setFormData] = useState<any>({
-    username: '',
-    password: '',
-    confirmPassword: '',
+    username: undefined,
+    password: undefined,
+    confirmPassword: undefined,
   });
   const [error, setShowError] = useState(false);
 
