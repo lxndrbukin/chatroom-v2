@@ -32,7 +32,7 @@ export default function Auth(): JSX.Element {
 
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     const { name, placeholder } = e.target;
-    if (formData[name].length === 0) {
+    if (!formData[name] || formData[name].length === 0) {
       setShowError(true);
       dispatch(
         handleAuthErrors({
